@@ -7,7 +7,8 @@ public class Part5 {
     private static Pattern loginPattern = Pattern.compile("(^|(?<=\\n))[a-zA-Zа-яА-Я]+(?=;)");
     private static Pattern namePattern = Pattern.compile("(?<=;)[a-zA-Z]+\\s[a-zA-Z]+(?=;)");
     private static Pattern emailPattern = Pattern.compile("(?<=;)\\S+$");
-    private static Pattern domainPattern = Pattern.compile("(?<=@)[a-zA-Z]+\\.[a-zA-Z]+$");
+    private static Pattern domainPattern = Pattern.compile("(?<=@)\\w+\\.\\w+($|(?=\\n))");
+
     private static Pattern nameAndEmailPattern = Pattern.compile("(?<=;)[a-zA-Zа-яА-Я]+\\s[a-zA-Zа-яА-Я]+(?=;)|(?<=;)\\S+($|(?=\\n))");
     private static Pattern loginAndEmailPattern = Pattern.compile("(^|(?<=\\n))[a-zA-Zа-яА-Я]+(?=;)|(?<=;)\\S+($|(?=\\n))");
 
@@ -16,13 +17,14 @@ public class Part5 {
         String input = "ivanov;Ivan Ivanov;ivanov@mail.ru\n" +
                 "петров;Петр Петров;petrov@google.com\n" +
                 "lennon;John Lennon;lennon@google.com";
-        System.out.println(convert2(input));
+//        System.out.println(convert2(input));
+        System.out.println(convert3(input));
     }
 
     public static String convert1(String input) {
         StringBuilder stringBuilder = new StringBuilder();
 
-        Matcher matcher = loginAndEmailPattern .matcher(input);
+        Matcher matcher = loginAndEmailPattern.matcher(input);
         for (int i = 0; matcher.find(); i++) {
             stringBuilder.append(matcher.group());
             if (i % 2 == 0) {
@@ -54,21 +56,28 @@ public class Part5 {
     public static String convert3(String input) {
         StringBuilder stringBuilder = new StringBuilder();
 
-        // Find domain
-        Matcher matcher = domainPattern.matcher(input);
-        if (matcher.find()) {
-            // Append domain
-            stringBuilder.append(matcher.group());
-            stringBuilder.append(" ==> ");
+        String usedDomains = "";
+
+        Matcher domainMatcher = domainPattern.matcher(input);
+
+        while (domainMatcher.find()) {
+            String domain = domainMatcher.group();
+
+            if (!usedDomains.contains(domain)) {
+                usedDomains += domain + ";";
+
+                Pattern loginFollowedByDomainPatter = Pattern.compile("(^|(?<=\\n))[a-zA-Zа-яА-Я]+(?=;.+;.+" + domain + ")");
+                Matcher loginMatcher = loginFollowedByDomainPatter.matcher(input);
+
+                stringBuilder.append(domain).append(" ==> ");
+
+                for (int i = 0; loginMatcher.find(); i++) {
+                    stringBuilder.append(loginMatcher.group()).append(", ");
+                }
+                stringBuilder.append("\n");
+            }
         }
 
-        // Find login
-        matcher = loginPattern.matcher(input);
-        if (matcher.find()) {
-            // Append login
-            stringBuilder.append(matcher.group());
-            stringBuilder.append(")");
-        }
 
         return stringBuilder.toString();
     }
