@@ -4,11 +4,18 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class Part5 {
+    public static final String FILE_PATH = "src/ua/nure/ponomarenko/task3/part5.txt";
+
     public static void main(String[] args) {
-        String input = "ivanov;Ivan Ivanov;ivanov@mail.ru\n" +
-                "петров;Петр Петров;petrov@google.com\n" +
-                "lennon;John Lennon;lennon@google.com";
-        System.out.println(convert2(input));
+        String inputText = FileReader.readTextFromFile(FILE_PATH);
+        String outputText1 = convert1(inputText);
+        String outputText2 = convert2(inputText);
+        String outputText3 = convert3(inputText);
+        System.out.println("Part1:\n" +
+                "\tInput   data: \n" + inputText + "\n" +
+                "\tOutput1 data: \n" + outputText1 + "\n" +
+                "\tOutput2 data: \n" + outputText2 + "\n" +
+                "\tOutput3 data: \n" + outputText3);
     }
 
     public static String convert1(String input) {
@@ -26,6 +33,9 @@ public class Part5 {
                 stringBuilder.append("\n");
             }
         }
+
+        // Delete last '\n' character in the text
+        stringBuilder.deleteCharAt(stringBuilder.length() - 1);
 
         return stringBuilder.toString();
     }
@@ -46,6 +56,9 @@ public class Part5 {
             }
         }
 
+        // Delete last '\n' character in the text
+        stringBuilder.deleteCharAt(stringBuilder.length() - 1);
+
         return stringBuilder.toString();
     }
 
@@ -62,7 +75,7 @@ public class Part5 {
             String domain = domainMatcher.group();
 
             if (usedDomains.contains(domain)) {
-                break;
+                continue;
             }
 
             usedDomains += domain + ";";

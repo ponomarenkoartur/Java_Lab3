@@ -12,10 +12,11 @@ public class Part4 {
         String inputText = FileReader.readTextFromFile(FILE_PATH);
         String outputText;
 
-        System.out.println("Part1:\n" +
+        System.out.println("Part4:\n" +
                 "\tInput  data: " + inputText);
 
-        System.out.println("Enter query (string, double, int, stop)");
+        System.out.print("Enter query (string, double, int, stop)\n\t");
+
         // Read from console
         Scanner scanner = new Scanner(System.in);
         String inputFromConsole = scanner.nextLine();
@@ -23,19 +24,19 @@ public class Part4 {
         while (!inputFromConsole.equals("stop")) {
             switch (inputFromConsole) {
                 case "string":
-                    outputText = applyRegex(inputText, "\\b\\w\\b");
+                    outputText = applyRegex(inputText, "(?<=\\s|^)(\\d+[^0-9\\.\\s]+\\S*|[^0-9\\s\\.]+\\S*|\\.\\S+[^0-9\\s])(?=\\s|$)");
                     break;
                 case "double":
                     outputText = applyRegex(inputText, "(?<=\\s|^)(\\.\\d+|\\d+\\.\\d*)(?=\\s|$)");
                     break;
                 case "int":
-                    outputText = applyRegex(inputText, "(?<=[^\\s])\\d+(?=[\\s|$])");
+                    outputText = applyRegex(inputText, "(?<=\\s|^)\\d+(?=\\s|$)");
                     break;
                 default:
                     outputText = "Command is not valid. Enter 'stop' to finish.";
             }
             System.out.println("\tOutput data: " + outputText);
-            System.out.println("Enter query (string, double, int, stop)");
+            System.out.print("Enter query (string, double, int, stop)\n\t");
             inputFromConsole = scanner.nextLine();
         }
     }
@@ -48,6 +49,7 @@ public class Part4 {
 
         while(matcher.find()) {
             stringBuilder.append(matcher.group());
+            stringBuilder.append(" ");
         }
 
         return stringBuilder.toString();
