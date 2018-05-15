@@ -7,61 +7,43 @@ import java.util.regex.Pattern;
 
 public class Part4 {
     public static final String FILE_PATH = "src/ua/nure/ponomarenko/task3/part4.txt";
-    public static String REGEX;
 
     public static void main(String[] args) {
+        String inputText = FileReader.readTextFromFile(FILE_PATH);
+        String outputText;
+
+        System.out.println("Part1:\n" +
+                "\tInput  data: " + inputText);
+
+        System.out.println("Enter query (string, double, int, stop)");
+        // Read from console
         Scanner scanner = new Scanner(System.in);
         String inputFromConsole = scanner.nextLine();
-        String inputText = "";
-
-        // Read file
-        File file = new File(FILE_PATH);
-        FileInputStream fileInputStream;
-        BufferedInputStream bufferedInputStream;
-        DataInputStream dataInputStream;
-
-        try {
-            fileInputStream = new FileInputStream(file);
-            bufferedInputStream = new BufferedInputStream(fileInputStream);
-            dataInputStream = new DataInputStream(bufferedInputStream);
-
-            StringBuilder stringBuilder = new StringBuilder();
-
-            while (dataInputStream.available() != 0) {
-                stringBuilder.append(dataInputStream.readLine() + "\n");
-            }
-
-            inputText = stringBuilder.toString();
-
-            fileInputStream.close();
-            bufferedInputStream.close();
-            dataInputStream.close();
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
 
         while (!inputFromConsole.equals("stop")) {
             switch (inputFromConsole) {
                 case "string":
-                    REGEX = "\\b\\w\\b";
+                    outputText = applyRegex(inputText, "\\b\\w\\b");
                     break;
                 case "double":
-                    REGEX = "(?<=\\s|^)(\\.\\d+|\\d+\\.\\d*)(?=\\s|$)";
+                    outputText = applyRegex(inputText, "(?<=\\s|^)(\\.\\d+|\\d+\\.\\d*)(?=\\s|$)");
                     break;
                 case "int":
-                    REGEX = "\\b\\d+\\b";
+                    outputText = applyRegex(inputText, "(?<=[^\\s])\\d+(?=[\\s|$])");
                     break;
+                default:
+                    outputText = "Command is not valid. Enter 'stop' to finish.";
             }
-            applyRegex(inputText);
+            System.out.println("\tOutput data: " + outputText);
+            System.out.println("Enter query (string, double, int, stop)");
+            inputFromConsole = scanner.nextLine();
         }
     }
 
-    public static String applyRegex(String inputText) {
+    public static String applyRegex(String inputText, String regexPatternString) {
         StringBuilder stringBuilder = new StringBuilder();
 
-        Pattern pattern = Pattern.compile(REGEX);
+        Pattern pattern = Pattern.compile(regexPatternString);
         Matcher matcher = pattern.matcher(inputText);
 
         while(matcher.find()) {

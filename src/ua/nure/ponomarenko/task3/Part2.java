@@ -8,29 +8,11 @@ public class Part2 {
     public static final String FILE_PATH = "src/ua/nure/ponomarenko/task3/part2.txt";
 
     public static void main(String[] args) {
-        File file = new File(FILE_PATH);
-        FileInputStream fileInputStream;
-        BufferedInputStream bufferedInputStream;
-        DataInputStream dataInputStream;
-
-        try {
-            fileInputStream = new FileInputStream(file);
-            bufferedInputStream = new BufferedInputStream(fileInputStream);
-            dataInputStream = new DataInputStream(bufferedInputStream);
-
-            while (dataInputStream.available() != 0) {
-                String convertedLine = deleteWordsHavingCharacterRepetitions(dataInputStream.readLine());
-                System.out.println(convertedLine);
-            }
-
-            fileInputStream.close();
-            bufferedInputStream.close();
-            dataInputStream.close();
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        String inputText = FileReader.readTextFromFile(FILE_PATH);
+        String outputText = deleteWordsHavingCharacterRepetitions(inputText);
+        System.out.println("Part2:\n" +
+                "\tInput  data: " + inputText + "\n" +
+                "\tOutput data: " + outputText);
     }
 
     public static String deleteWordsHavingCharacterRepetitions(String inputText) {

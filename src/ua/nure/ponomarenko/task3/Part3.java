@@ -1,19 +1,21 @@
 package ua.nure.ponomarenko.task3;
 
 
-import java.io.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class Part3 {
-    public static final String FILE_PATH = "src/ua/nure/ponomarenko/task3/part2.txt";
+    public static final String FILE_PATH = "src/ua/nure/ponomarenko/task3/part3.txt";
 
     public static void main(String[] args) {
-        String inputString = "abc abc dfkjgh abc abc df ba ba";
-        System.out.println(deleteWordsRepeatingWords(inputString));
+        String inputText = FileReader.readTextFromFile(FILE_PATH);
+        String outputText = deleteRepeatingWords(inputText);
+        System.out.println("Part3:\n" +
+                "\tInput  data: " + inputText + "\n" +
+                "\tOutput data: " + outputText);
     }
 
-    public static String deleteWordsRepeatingWords(String inputText) {
+    public static String deleteRepeatingWords(String inputText) {
         String returnText = inputText;
         String patternString = "\\b(\\S+)\\s(?=(\\S*\\s)*\\1\\b)";
 
