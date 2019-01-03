@@ -15,8 +15,6 @@ public class Part1 {
     }
 
     public static String invertCaseInWordsWhereMoreThanThreeLetters(String inputText) {
-        // TODO: когда в конце слова с меньшим количеством букв чем 3, то они вообще не записываються
-
         String patternString = "\\S{3,}";
 
         Pattern pattern = Pattern.compile(patternString);

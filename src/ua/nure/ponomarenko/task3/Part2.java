@@ -27,6 +27,6 @@ public class Part2 {
             stringBuilder.append(matcher.replaceAll(""));
         }
 
-        return stringBuilder.toString();
+        return stringBuilder.toString().trim();
     }
 }

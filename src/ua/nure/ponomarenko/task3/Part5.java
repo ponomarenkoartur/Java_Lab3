@@ -11,7 +11,7 @@ public class Part5 {
         String outputText1 = convert1(inputText);
         String outputText2 = convert2(inputText);
         String outputText3 = convert3(inputText);
-        System.out.println("Part1:\n" +
+        System.out.println("Part5:\n" +
                 "\tInput   data: \n" + inputText + "\n" +
                 "\tOutput1 data: \n" + outputText1 + "\n" +
                 "\tOutput2 data: \n" + outputText2 + "\n" +
